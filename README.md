@@ -41,14 +41,14 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 
 ## Compilation
 
-#### Custom C++ Implementation
+## Custom C++ Implementation
 ```bash
 g++ -std=c++17 -O3 -fopenmp main.cpp -o myexe
 
-#### Eigen C++ Implementation
+## Eigen C++ Implementation
 g++ -std=c++17 -O3 -fopenmp -march=native -I/usr/include/eigen3 main.cpp -o myexe
 
-### Usage
+## Usage
 ./myexe <input_file>
 
 To run with a specific number of threads (e.g., 1):
@@ -60,7 +60,7 @@ OMP_NUM_THREADS=$(nproc) ./myexe <input_file>
 The Custom C++ implementation automatically detects the input format, while for Eigen use -3 to specify 3 column input file:
 OMP_NUM_THREADS=1 ./myexe 6M_300_200_50.tab -v -3
 
-### Additional Options
+## Additional Options
 
 - `-v`: Enable verbose output
 - `-3`: Use 3-column input format (required for Eigen implementation, automatic for Custom C++)
@@ -74,7 +74,7 @@ For more detailed information on options, run:
 ./myexe --help
 
 
-### Datasets
+## Datasets
 
 We used the following datasets in our experiments:
 - 1000pieris.tab (1,000 sequences)
