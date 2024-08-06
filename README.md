@@ -43,7 +43,7 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 
 #### Build
 
-mkdir build
+- mkdir build
 - cd build
 - cmake ..
 - make
