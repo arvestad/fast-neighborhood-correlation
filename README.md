@@ -39,7 +39,7 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 - OpenMP library
 - Eigen library (for Eigen implementation)
 
-### How to Build
+### How to Build Terminal Commands
 
 - mkdir build
 - cd build
