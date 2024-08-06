@@ -41,7 +41,7 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 
 ## Compilation
 
-## Custom C++ Implementation
+### Custom C++ Implementation
 ```bash
 g++ -std=c++17 -O3 -fopenmp main.cpp -o myexe
 
@@ -73,7 +73,6 @@ For more detailed information on options, run:
 ```bash
 ./myexe --help
 
-###
 
 ## Datasets
 
