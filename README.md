@@ -18,7 +18,6 @@ The goal is to analyze and improve the computational efficiency of NC for large-
   - `/cpp`: C++ implementations (both custom and Eigen)
 - `/data`: datasets and result outputs
 - `/scripts`: Python script to compare output
-- `/docs`: Documentation and thesis text
 
 ## Key Features
 
