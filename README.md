@@ -39,14 +39,16 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 - OpenMP library
 - Eigen library (for Eigen implementation)
 
-### Compilation
-
-#### Build
+### How to Build
 
 - mkdir build
 - cd build
 - cmake ..
 - make
+
+### Compilation
+
+
 
 #### Custom C++ Implementation
 g++ -std=c++17 -O3 -fopenmp main.cpp -o myexe
