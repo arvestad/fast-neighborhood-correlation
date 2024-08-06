@@ -44,9 +44,9 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 #### Build
 
 mkdir build
-cd build
-cmake ..
-make
+- cd build
+- cmake ..
+- make
 
 #### Custom C++ Implementation
 g++ -std=c++17 -O3 -fopenmp main.cpp -o myexe
