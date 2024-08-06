@@ -32,9 +32,9 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 - 274.5x faster for the dataset 9M_450_200_50.
 - Consistent accuracy with minimal output differences between implementations
 
-### How to Compile and Run
+## How to Compile and Run
 
-### Prerequisites
+## Prerequisites
 - G++ compiler with C++17 support
 - OpenMP library
 - Eigen library (for Eigen implementation)
@@ -74,7 +74,7 @@ For more detailed information on options, run:
 ./myexe --help
 
 
-## Datasets
+### Datasets
 
 We used the following datasets in our experiments:
 - 1000pieris.tab (1,000 sequences)
