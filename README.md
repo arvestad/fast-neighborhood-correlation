@@ -34,7 +34,7 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 
 ### How to Compile and Run
 
-## Prerequisites
+### Prerequisites
 - G++ compiler with C++17 support
 - OpenMP library
 - Eigen library (for Eigen implementation)
