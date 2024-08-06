@@ -70,7 +70,6 @@ OMP_NUM_THREADS=1 ./myexe 6M_300_200_50.tab -v -3
 - `-t <transform>`: Apply score transform (options: sqrt, cubicroot, 2.5root, log10, ln)
 
 For more detailed information on options, run:
-```bash
 ./myexe --help
 
 
