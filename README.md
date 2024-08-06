@@ -32,7 +32,7 @@ Our custom C++ implementation achieved significant speedups compared to the Pyth
 - 274.5x faster for the dataset 9M_450_200_50.
 - Consistent accuracy with minimal output differences between implementations
 
-## How to Compile and Run
+### How to Compile and Run
 
 ## Prerequisites
 - G++ compiler with C++17 support
