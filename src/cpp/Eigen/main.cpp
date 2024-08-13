@@ -92,10 +92,10 @@ readBlast3ColFormat(std::vector<std::ifstream>& file_handles, const std::functio
     return std::make_tuple(id2accession, similar_pairs, q_accession2id.size(), s_accession2id.size());
 }
 
-float pearsonCorrelation(const Eigen::SparseMatrix<float>& matrix, std::size_t i, std::size_t j,
+float pearsonCorrelation(const Eigen::SparseMatrix<float, Eigen::RowMajor>& matrix, std::size_t i, std::size_t j,
                          std::vector<std::unordered_map<std::size_t, std::tuple<float, float, float>>>& thread_local_caches) {
-    Eigen::VectorXf row_i = matrix.row(i);
-    Eigen::VectorXf row_j = matrix.row(j);
+    Eigen::SparseVector<float> row_i = matrix.row(i);
+    Eigen::SparseVector<float> row_j = matrix.row(j);
 
     int thread_id = omp_get_thread_num();
     auto& cache = thread_local_caches[thread_id];
@@ -123,7 +123,7 @@ float pearsonCorrelation(const Eigen::SparseMatrix<float>& matrix, std::size_t i
     return numerator / denominator;
 }
 
-Eigen::SparseMatrix<float> scoresToComparisonMatrix(const std::map<std::tuple<std::size_t, std::size_t>, float>& similar_pairs, std::size_t nrows, std::size_t ncols) {
+Eigen::SparseMatrix<float, Eigen::RowMajor> scoresToComparisonMatrix(const std::map<std::tuple<std::size_t, std::size_t>, float>& similar_pairs, std::size_t nrows, std::size_t ncols) {
     std::vector<Eigen::Triplet<float>> tripletList;
     tripletList.reserve(similar_pairs.size());
 
@@ -135,7 +135,7 @@ Eigen::SparseMatrix<float> scoresToComparisonMatrix(const std::map<std::tuple<st
         tripletList.emplace_back(row, col, value);
     }
 
-    Eigen::SparseMatrix<float> comparisonMatrix(nrows, ncols);
+    Eigen::SparseMatrix<float, Eigen::RowMajor> comparisonMatrix(nrows, ncols);
     comparisonMatrix.setFromTriplets(tripletList.begin(), tripletList.end());
 
     std::cout << "Prepared matrix with similarity data (" << nrows << " by " << ncols << ", but a sparse matrix)" << std::endl;
@@ -194,7 +194,7 @@ void neighborhoodCorrelation(
 
     auto good_pairs = findGoodPairs(similar_pairs, threshold, xross);
 
-    Eigen::SparseMatrix<float> comparison_matrix = scoresToComparisonMatrix(similar_pairs, n_queries, n_ref_seqs);
+    Eigen::SparseMatrix<float, Eigen::RowMajor> comparison_matrix = scoresToComparisonMatrix(similar_pairs, n_queries, n_ref_seqs);
 
     std::cout << "similar_pairs length : " << similar_pairs.size() << std::endl;
     std::cout << "good_pairs length : " << good_pairs.size() << std::endl;
