@@ -234,13 +234,13 @@ unordered_set<pair<int, int>, pair_hash> find_good_pairs(
 void print_memory_usage(const string& message) {
     struct rusage r_usage;
     getrusage(RUSAGE_SELF, &r_usage);
-    cout << message << " - Memory usage: " << r_usage.ru_maxrss << " KB" << endl;
+    cerr << message << " - Memory usage: " << r_usage.ru_maxrss << " KB" << endl;
 }
 
 void neighborhood_correlation(const string& output_file, unordered_map<int, string>& id2accession,
                               unordered_map<pair<int, int>, double>& similar_pairs, int n_queries, int n_ref_seqs,
                               double threshold, bool xross, bool verbose, double nc_thresh = NC_THRESH) {
-    if (verbose) cout << "Starting neighborhood_correlation" << endl;
+    if (verbose) cerr << "Starting neighborhood_correlation" << endl;
     auto start_time = chrono::steady_clock::now();
 
     auto good_pairs = find_good_pairs(similar_pairs, threshold, xross);
@@ -248,9 +248,9 @@ void neighborhood_correlation(const string& output_file, unordered_map<int, stri
     if (verbose) {
         auto end_time = chrono::steady_clock::now();
         auto duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
-        cout << "find_good_pairs took " << duration << " milliseconds" << endl;
-        cout << "Good pairs calculated: " << good_pairs.size() << endl;
-        cout << "similar_pairs length : " << similar_pairs.size() << std::endl;
+        cerr << "find_good_pairs took " << duration << " milliseconds" << endl;
+        cerr << "Good pairs calculated: " << good_pairs.size() << endl;
+        cerr << "similar_pairs length : " << similar_pairs.size() << std::endl;
         print_memory_usage("After calculating good pairs");
     }
 
@@ -299,7 +299,7 @@ void neighborhood_correlation(const string& output_file, unordered_map<int, stri
                 counter++;
                 if (verbose && counter % print_interval == 0) {
                     auto elapsed_time = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start_time).count();
-                    cout << "Processed: " << counter << "/" << good_pairs.size() << " - Time elapsed: " << elapsed_time << " ms" << endl;
+                    cerr << "Processed: " << counter << "/" << good_pairs.size() << " - Time elapsed: " << elapsed_time << " ms" << endl;
                     print_memory_usage("During processing");
                 }
             }
@@ -315,7 +315,7 @@ void neighborhood_correlation(const string& output_file, unordered_map<int, stri
 
     outfile.close();
     if (verbose) {
-        cout << "Neighborhood correlation completed" << endl;
+        cerr << "Neighborhood correlation completed" << endl;
         print_memory_usage("After completion");
     }
 }
@@ -326,11 +326,16 @@ int main(int argc, char* argv[]) {
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <input_files...> [options]" << endl;
         cerr << "Options:" << endl;
-        cerr << "  -o <output_file>    Specify output file (default: output_results.txt)" << endl;
-        cerr << "  -v                  Verbose output" << endl;
-        cerr << "  -x                  Cross-file mode" << endl;
-        cerr << "  -c <threshold>      Consideration threshold (default: " << CONSIDERATION_THRESHOLD << ")" << endl;
-        cerr << "  -t <transform>      Score transform (sqrt, cubicroot, 2.5root, log10, ln)" << endl;
+        cerr << "  -o  <output_file>    Specify output file (default: output_results.txt)" << endl;
+        cerr << "  -v                   Verbose output" << endl;
+        cerr << "  -x                   Only consider pairs of sequences from different files" << endl;
+        cerr << "  -c  <threshold>      Consideration threshold (default: " << CONSIDERATION_THRESHOLD << ")" << endl;
+	cerr << "                       Only consider pairs of sequences linked by similarities (maybe in" << endl;
+	cerr << "                       several steps) with this bitscores or higher." << endl;
+        cerr << "  -st <transform>      Score transform (sqrt, cubicroot, 2.5root, log10, ln)" << endl;
+	cerr << "                       Transform the input bitscores with one of the given functions. " << endl;
+	cerr << "                       The two logarithmic transforms are actually on the bitscore + 1," << endl;
+	cerr << "                       to avoid issues around zero." << endl;
         return 1;
     }
 
@@ -348,7 +353,7 @@ int main(int argc, char* argv[]) {
             else if (arg == "-v") verbose = true;
             else if (arg == "-x") xross_files = true;
             else if (arg == "-c" && i + 1 < argc) consider = stod(argv[++i]);
-            else if (arg == "-t" && i + 1 < argc) {
+            else if (arg == "-st" && i + 1 < argc) {
                 string transform_name = argv[++i];
                 if (transform_name == "sqrt") transform = sqrt_transform;
                 else if (transform_name == "cubicroot") transform = [](double sc) { return root_transform(sc, 3.0); };
@@ -392,7 +397,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (!singletons.empty() && verbose) {
-        cout << "Noted " << singletons.size() << " sequences without a hit in the reference data." << endl;
+        cerr << "Noted " << singletons.size() << " sequences without a hit in the reference data." << endl;
     }
 
     if (!similarities.empty()) {
@@ -401,6 +406,6 @@ int main(int argc, char* argv[]) {
 
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-    std::cout << "Total execution time: " << duration.count() / 1000.0 << " seconds" << std::endl;
+    std::cerr << "Total execution time: " << duration.count() / 1000.0 << " seconds" << std::endl;
     return 0;
 }
