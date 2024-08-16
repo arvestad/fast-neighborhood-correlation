@@ -6,10 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenMP REQUIRED)
 
-add_executable(myexe main.cpp)
+add_executable(fnc main.cpp)
 
-target_link_libraries(myexe PRIVATE OpenMP::OpenMP_CXX)
+target_link_libraries(fnc PRIVATE OpenMP::OpenMP_CXX)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(myexe PRIVATE -O3)
+    target_compile_options(fnc PRIVATE -O3)
 endif()
